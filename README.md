@@ -9,3 +9,6 @@ Made for the project Facebook MusicGen
 https://ffmpeg.org/download.html
 2. Download the codec ffmpeg and edit path in your system
 It would be great if you could watch this video https://youtu.be/IECI72XEox0
+
+![Screenshot](/screenshots/scr.png)
+![Screenshot](/screenshots/scr2.png)
