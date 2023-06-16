@@ -52,6 +52,11 @@ def slicefile():
 
 gui.label(text="Support mp3, wav, ogg, aac", bg = "#fcc045")
 gui.button(text="Choose an audio file", command=slicefile, padx = 5, pady = 5, row=1, column=0)
-gui.photo("logo2.png",row = 2)
+
+#if logo-picture was deleted
+try:
+    gui.photo("logo2.png",row = 2)
+except
+    pass
 
 gui.loop()
