@@ -56,7 +56,7 @@ gui.button(text="Choose an audio file", command=slicefile, padx = 5, pady = 5, r
 #if logo-picture was deleted
 try:
     gui.photo("logo2.png",row = 2)
-except
+except:
     pass
 
 gui.loop()
