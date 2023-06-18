@@ -11,7 +11,8 @@ def make_grid(func):
         result.grid(row = kwargs.get('row', 0),
                     column = kwargs.get('column', 0),
                     padx = kwargs.get('padx', 0),
-                    pady = kwargs.get('pady', 0))    
+                    pady = kwargs.get('pady', 0),
+                    sticky = kwargs.get('sticky', "w"))    
 
         #execution of widget parameters
         for param in kwargs:
@@ -39,6 +40,7 @@ class TKeasy():
                               highlightbackground = None,
                               highlightthickness = None,
                               background = None,
+                              width = None,
                               padx = None,
                               pady = None)
         
