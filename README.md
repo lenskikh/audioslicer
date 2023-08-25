@@ -9,8 +9,6 @@ https://ffmpeg.org/download.html
 It would be great if you could watch this video https://youtu.be/IECI72XEox0
 3. If you have a windows operating system, you can download audioslicer.zip and unzip to the folder with the same name, and run audioslicer.exe
 
-
-By default, it is sliced into 30-second chunks. The new version will allow you to specify the exact size.
 ![Screenshot](/screenshots/scr3.png)
 
 # Audio Slicer Ru
