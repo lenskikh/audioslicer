@@ -1,7 +1,5 @@
 # Audio Slicer
 The application slices the audio track into parts. 
-In the first version, it cuts into chunks of 30 seconds by default
-Made for the project Facebook MusicGen
 
 # Before start
 
@@ -13,14 +11,21 @@ It would be great if you could watch this video https://youtu.be/IECI72XEox0
 
 
 By default, it is sliced into 30-second chunks. The new version will allow you to specify the exact size.
-![Screenshot](/screenshots/scr.png)
-![Screenshot](/screenshots/scr2.png)
+![Screenshot](/screenshots/scr3.png)
 
 # Audio Slicer Ru
 
-Программа создана для нарезки аудиофайла на ровные отрезки по 30 секунд. Сделано для проекта Facebook MusicGen. Таким образом, вы можете скормить проекту всю песню. 
+Программа имеет три функции:
+1. Нарезка аудиофайла на ровные отрезки. Укажите отрезок в секундах. 
+2. Извлечение аудиодорожки из видеофайла формата mp4, по умолчанию сохраниться в wav формате
+3. Извлечение отрезка из аудиофайла и комбинирование mp3 файла. Например, вы хотите удалить короткий разговор из аудиоклипа. Укажите в секундах, где начинается разговор и когда заканчивается, именно этот отрывок будет удален и создан новый mp3 файл без этого отрывка. 
 
-Перед запуском установите кодек ffmpeg, нужно просто скачать exe и прописать к нему путь, как показано на этом видео https://youtu.be/IECI72XEox0
+# Установка
 
-Если у вас Windows, то можете просто скачать архив audioslicer.zip и распаковать его в директорию. Запустить audioslicer.exe, но вместе с программой в той же директории должен быть файл logo2.png, иначе отвалится с ошибкой.
-В новой версии можно будет указать точный размер для нарезки
+1. Поставьте язык python любой версии
+2. Перед запуском установите кодек ffmpeg, нужно просто скачать exe и прописать к нему путь, как показано на этом видео https://youtu.be/IECI72XEox0
+3. Установите две библиотеки: 
+pip install pydub
+pip install ffmpeg
+
+Если у вас Windows, то можете просто скачать архив audioslicer.zip и распаковать его в директорию. 

@@ -1,8 +1,9 @@
 import os
 import tkinter as tk
+import logging
 from tkinter import filedialog, scrolledtext, messagebox, colorchooser
 
-#"Version 1.0"
+#"Version 1.1"
 
  
 def make_grid(func):
@@ -12,16 +13,16 @@ def make_grid(func):
                     column = kwargs.get('column', 0),
                     padx = kwargs.get('padx', 0),
                     pady = kwargs.get('pady', 0),
-                    sticky = kwargs.get('sticky', "w"))    
+                    sticky = kwargs.get('sticky', None)
+                    ) 
 
         #execution of widget parameters
         for param in kwargs:
-            if 'param' in kwargs:
-                try:
-                    result.config(param = kwargs[param])  
-                except:
-                    print(kwargs)
-                    result.config(kwargs)
+            try:
+                result.config(param=kwargs[param])
+            except:
+                #logging.warning(param)
+                pass
         return result
     return wrapper
 
@@ -29,41 +30,30 @@ def make_grid(func):
 class TKeasy():
     
 
-    def __init__(self):
+    def __init__(self,**kwargs):
         self.window = tk.Tk()
 
         #for take information from widgets
         self.memory = {}
 
         #default frame
-        self.frame = tk.Frame(self.window,
-                              highlightbackground = None,
-                              highlightthickness = None,
-                              background = None,
-                              width = None,
-                              padx = None,
-                              pady = None)
+        self.frame = tk.Frame(self.window,**kwargs)
+        for conf in kwargs:
+            self.frame.config(kwargs)
         
-        self.frame.place(x=0,y=0)
+        self.frame.place(width=0, height=0, x=0,y=0)
 
 
     #add new frame
-    def frames(self,frame,x,y,
-               highlightbackground = None,
-               highlightthickness  = None,
-               background = None,
-               padx = None,
-               pady = None):
+    def frames(self,frame,x,y,**kwargs):
 
         self.frame = frame
-        self.frame = tk.Frame(self.window,
-                              highlightbackground = highlightbackground,
-                              highlightthickness = highlightthickness,
-                              background = background,
-                              padx = padx,
-                              pady = pady)
+        self.frame = tk.Frame(self.window,**kwargs)
+        for conf in kwargs:
+            self.frame.config(kwargs)
         
         self.frame.place(x = x, y = y)
+        
     
     def Title(self,title):
         self.window.title(title)
@@ -75,11 +65,13 @@ class TKeasy():
     def config(self,size:str = None,
                bg:str = None,
                border:int = None,
-               icon:str = None):
+               icon:str = None,
+               transparent = 1):
         
         self.window.geometry(size) #correct syntax "300x300+300+300"
         self.window.configure(background=bg)
         self.window.iconbitmap(icon)
+        self.window.wm_attributes('-alpha', transparent)
 
         if border == "False":
             self.window.overrideredirect(1)       
@@ -93,19 +85,20 @@ class TKeasy():
     def hotkey(self,key,command):
         return self.window.bind(key,command)
 
-    @make_grid #LABEL WIDGET   
-    def label(self, name="label", row:int = 0, column:int = 0, padx = 0, pady = 0, **kwargs):
+    #LABEL WIDGET
+    @make_grid  
+    def label(self, name="label", row:int = 0, column:int = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         self.memory[name] = tk.Label(self.frame, **kwargs)
         return self.memory[name]  
-    
+
     def label_click(self):
         return self.memory["label"]
 
-    def file(self,file):
+    def image_file(self,file):
         return tk.PhotoImage(file=file)
     
     @make_grid 
-    def photo(self, file = None, row = 0, column = 0, padx = 0, pady = 0, **kwargs):
+    def photo(self, file = None, row = 0, column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         photo = tk.PhotoImage(file=file)
         self.memory["picture"] = tk.Label(self.frame,image=photo, **kwargs)
         self.memory["picture"].photo = photo
@@ -115,13 +108,13 @@ class TKeasy():
         return self.memory[name]
 
     @make_grid #BUTTON WIDGET
-    def button(self,command:str = None, text = None, row:int = 0, column:int = 0, padx = 0, pady = 0, **kwargs):
+    def button(self,command:str = None, text = None, row:int = 0, column:int = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         
         return tk.Button(self.frame,text = text,
                 command = command, **kwargs)      
                
     @make_grid #ENTRY WIDGET
-    def entry(self, name:str = "from_entry",row = 0,column = 0, padx = 0, pady = 0, **kwargs):
+    def entry(self, name:str = "from_entry",row = 0,column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         
         self.memory[name] = tk.Entry(self.frame, **kwargs)
 
@@ -129,21 +122,21 @@ class TKeasy():
     
     @make_grid
     def text_area(self, name = "text_area", #Name by default
-                  row = 0, column = 0, padx = 0, pady = 0, **kwargs):
+                  row = 0, column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
 
         self.memory[name] = tk.Text(self.frame, **kwargs)
 
         return self.memory[name]       
 
     @make_grid
-    def text_area_scroll(self,name = "text_area_scroll", row = 0, column = 0, padx = 0, pady = 0, **kwargs):
+    def text_area_scroll(self,name = "text_area_scroll", row = 0, column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         self.memory[name] = scrolledtext.ScrolledText(self.frame, **kwargs)     
         return self.memory[name]  
         
     @make_grid #CHECKBUTTON WIDGET
     def checkbox(self,
                  name:str = "checkbox", #Name by default
-                 text:str = "", row:int = 0, column:int = 0, padx = 0, pady = 0, **kwargs):
+                 text:str = "", row:int = 0, column:int = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
 
         self.memory[name] = tk.IntVar()
         self.memory[text] = tk.Checkbutton(self.frame,
@@ -153,7 +146,7 @@ class TKeasy():
     
 
     @make_grid #RADIOBUTTON WIDGET
-    def radiobox(self,text,row:int = 0,column:int = 0, padx = 0, pady = 0, **kwargs):
+    def radiobox(self,text,row:int = 0,column:int = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         if "radiobox" not in self.memory:
             self.memory["radiobox"] = tk.StringVar()
         
@@ -162,7 +155,8 @@ class TKeasy():
 
         return self.memory[text]
     
-    def dropdown_list(self,variable,choices,row = 0, column = 0, padx = 0, pady = 0, **kwargs):
+    def dropdown_list(self,variable,choices,row = 0, column = 0, 
+                      padx = 0, pady = 0, sticky:str = None, **kwargs):
         self.memory[variable] = tk.StringVar(self.frame)
         self.memory[variable].set(choices[0]) # default value
         self.memory["dropdown"] =  tk.OptionMenu(self.frame, self.memory[variable],*choices)
@@ -171,7 +165,7 @@ class TKeasy():
         self.memory["dropdown"].grid(column=column, row=row)
     
     @make_grid #LISTBOX WIDGET
-    def listbox(self,name = "Listbox", row = 0, column = 0, padx = 0, pady = 0, **kwargs):
+    def listbox(self,name = "Listbox", row = 0, column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         self.memory[name] = tk.Listbox(self.frame, **kwargs)
         return self.memory[name] 
 
@@ -180,7 +174,7 @@ class TKeasy():
             self.memory[name].insert("end", x)    
 
     @make_grid #SPINBOX WIDGET
-    def spinbox(self,name = "spinbox", from_to:str = "0-10", row = 0,column = 0, padx = 0, pady = 0, **kwargs):
+    def spinbox(self,name = "spinbox", from_to:str = "0-10", row = 0,column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
  
         data1 = int(from_to.split("-")[0])
         data2 = int(from_to.split("-")[1])
@@ -189,7 +183,7 @@ class TKeasy():
         return self.memory[name] 
     
     @make_grid #SCALE WIDGET
-    def slider(self,name="slider", from_:int = 0, to:int = 100, row = 0, column = 0, padx = 0, pady = 0, **kwargs):
+    def slider(self,name="slider", from_:int = 0, to:int = 100, row = 0, column = 0, padx = 0, pady = 0, sticky:str = None, **kwargs):
         self.memory[name] = tk.Scale(self.frame, from_= from_, to = to, **kwargs)
         return self.memory[name] 
 
@@ -243,11 +237,10 @@ class TKeasy():
             return self.memory[name].get("1.0", 'end')  
 
     def destroy_frame(self,**kwargs):
-        self.frame.destroy()     
+        self.frame.destroy()              
 
     def save_file(self):
-        return filedialog.asksaveasfilename(initialdir = os.getcwd()+"./",title = "Save file") 
-    
+        return filedialog.asksaveasfilename(initialdir = os.getcwd()+"./",title = "Save file")     
 
     def insert_text_area(self,name,text,**kwargs): 
         self.memory[name].insert(1.0,text)    
