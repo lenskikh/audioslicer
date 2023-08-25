@@ -151,12 +151,14 @@ gui.frames (frame = "Trimmer under", x= 10, y = 295,
             padx = 10,
             pady = 10)
 
-gui.button(text="Choose a music file", command=combiner, sticky="w", padx = 10, pady = 5, row = 1)
+gui.button(text="Choose a music file", command=combiner, sticky="w", padx = 2, pady = 5, row = 1)
 
 gui.label(text="Delete audio segment & combine", bg = bg_color, sticky = "e", row = 0)
 gui.entry(name="slice 1", sticky="w", width = 4, padx = 5, pady = 5, column=1, row = 0)
+gui.insert_text(name="slice 1", text="1:10")
 
 gui.label(text="To", bg = bg_color, column=2, row = 0)
 gui.entry(name="slice 2", sticky="w", width = 4, padx = 5, pady = 5, column=3, row = 0)
+gui.insert_text(name="slice 2", text="1:20")
 
 gui.loop()
